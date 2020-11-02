@@ -1,0 +1,90 @@
+This was to be a trawlling style, preliminarly, exploritory analysis set. Unfortunately it was interupted, and is itself in a less than unfinished state.
+
+### Currnet contents
+
+#### Work was done with R 4.0.2, (code should also work with 3.6, but was not
+tested)
+
+
+#### Styte notes 
+This is a work in progress, with the understanding that it is sharable research
+code (never quite finished) that would be seen by a wide range of skills, as
+such it has several types of comments (none exclusive):
+  - "in progress" notes that are merely cleaned up "notes-to-self" 
+  - added infomation, outlines & links ex. for graphing howto's
+  - explainations inline, block or secion and function 
+  - sections of code.
+I've tried to clean things up so it will mostly make sense to other folks, and
+things such as a commented out section of code 'should' be clearly explained.  
+
+
+#### R code file 
+
+* make_demo_file.R
+    This uses plain R to create a pair of sample files with the number of rows
+    listed for reasonable time testing, and having more than 5 rows each ;). It
+    uses the limited row example files, and just replicates the row informaition
+    to file out the size.
+    For those unfamiliar with R, it has example of this, along with handling
+    awkward column headers independently, and using the built in text search
+    grep. 
+
+
+##### The remaining files form a single unit, orginized by usage/application.
+  - **putnamVermis_exploritory.R**  is the main or run script it has the
+  executions calls, and contented variables & constants, it sources (pulls in)
+  the content (mostly functions of the other files. 
+  
+  - **fileProcessingTools.R**  is the location for file related tool, it
+  currently contains the primary file reading function mrs.cvsparse and a few
+  helpers, it also an approriate place for any upcoming simple file writing or
+  generic table manipulation functions.
+
+  - **StatsTools.R** functions for statistical methods.
+    NOTE: currently the only function are trawling variant that use R's cor and
+    cor.text correlation methods interally. Instead of using something like
+    ltm's corr.text to do this as is used elsewhere, the functions give greater
+    pass through access to the underlying parameters and method to skip based on
+    missing values. 
+         To account for the possiblilty of trying to work in the context 
+         of having a hi fraction of NA's which is probematic for correlation
+         and regresstion testing. As a base heuristic for preliminary analysis
+         with so many repeated comparison it is preferable to use the built in
+         methods for addressing limited missing information row content and
+         skip the comparisions that are probematic than to try to create
+         multiple method, or risk have a method with significantly differing
+         numbers of inputs from non-aligning rows.  
+
+  - **graphingTools.R**  is currently empty, this was a planned location for 
+    any functions related to creating graphs etc. including writing them to
+    independent files such as pdfs with one or multiple graph images per page.
+    
+    
+### The plan
+* INIALL plan
+   - part 1 was to do a as series of overview comparision of each column and where
+   reason able by subset (i.e. by age or group, score_range (ses, madrs, ymrs) collect
+   covarence and correlaton [done/ready to go], then filter for passing criteria
+   such as minimum absolute score, P value (or adjusted pvalue) and provide 
+   graphical repsentations [currently 'next']
+   
+   - part 2, similar to part 1 2a was with regression tools using R's lm function,
+   2b would then move on to past one-to-one comparisons to look at one to 2 in linear
+   and limited poly nomials i.e  A ~ xB+yC and A ~ xB+yC^2  
+   
+   - I (jacob) was also looking to incoperate some validation, net Cr ie (PCr + Cr)
+   is being used as a normilization factor, so checking sample variance for outliers
+   in PCr/(PCr + Cr) Cr/(PCr+Cr), we can report the Pr/Cr, Cr/Pcr but they subject to
+   greater variance making them harder to interpert, a better check would be a
+   minimally related stable thing, GSH if it has a clear signal, and were not much
+   change in its impactors, it might serve, so checking PCr/GSH  Cr/GSH or
+   (PCr + CR)/GSH for outlyers might be an ok validation? IDK
+   
+   - I was thinking about going out to 3 vars in polynominal time once the first is
+   set up it is simple to code explinential growth in compute time.
+   - **properly accounting for multiple testing is inportant for all of this**
+   - ** given the smaller sample size Consider using kendall it does take a bit longer
+   to compute but it is less senstive to non-uniforimity in the middle.** the corr
+   values are also on a different metric so the should not be directly compared. 
+   
+

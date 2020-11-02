@@ -1,9 +1,9 @@
-# note these are functions sourced elsewhere
+# note these libraries are intentionally commented and only here for reference
+# they are called in by the sourcing script.
 
-# library(readr) # for read_csv
-# #library(stringr) # not directly used at the moment
-# #library(tibble) # not directly used at the moment
-# library(dplyr) #  for %>%
+# library(readr) # for read_csv in mrs.csvparse
+# #library(stringr) # not used at the moment could be used to replace grep w/Tidy func
+
 
 reorg <- function(full.read) {
   # replaces 999 with NA's in %SD columns,
@@ -12,7 +12,7 @@ reorg <- function(full.read) {
   SD.cols <- grep('%SD', col.names)
   Cr_normed.cols <- grep("Cr\\+PCr", col.names)
 
-  Cr_normed.cols <- setdiff(Cr_normed.cols, SD.cols) # set differenct keeping the left
+  Cr_normed.cols <- setdiff(Cr_normed.cols, SD.cols) # set difference keeping the left
   full.read[,SD.cols] <- na_if(full.read[,SD.cols], 999)  # set %SD col 999 as NA
 
   full.read <-cbind(
@@ -21,8 +21,9 @@ reorg <- function(full.read) {
   return(full.read)
 }
 
+
 mrs.csvparse <- function(pathloc) {
-  # generic read csv and reorg (above) for mrs csv files.
+  # use the tidyverse readr::read_csv and reorg (above) for mrs csv files.
   full.read <- read_csv(pathloc, col_names=T, trim_ws=T,
                         col_types=cols("ScanId"=col_character(),
                                        "group"=col_factor(),
@@ -34,11 +35,7 @@ mrs.csvparse <- function(pathloc) {
   return(full.read)
 }
 
-# why do these (commented) ones work at the command line and not in a function
-# FIXME
-# parameter: NULL becomes  parameter: NA
-# for (i in 1:length(tst) ) { tst[i] <- ifelse( is.null(tst[[i]] ), NA, tst[[i]])  }
-# for ( i in 1:length(lst) ) {  if ( is.null(lst[[i]]) ) { lst[i] <- NA } }
+
 null2na.lst <- function (lst) {
   for ( i in 1:length(lst) ) {
       if ( is.null(lst[[i]]) ) { lst[i] <- NA }
@@ -46,6 +43,7 @@ null2na.lst <- function (lst) {
   return(lst)
   }
 }
+
 
 # convenience for later operations
 # assumes values that exist match - these won't be duplicated,
